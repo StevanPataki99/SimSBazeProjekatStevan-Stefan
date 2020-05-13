@@ -1,23 +1,26 @@
 from PySide2 import QtWidgets, QtCore
 from serial_file_handler import SerialFileHandler
+from fileHandlerFactory import FileHandlerFactory
 
 
 class StudentModel(QtCore.QAbstractTableModel):
-    
-    def __init__(self, parent=None):
+    # path_to_file = file_clicked_param
+    def __init__(self, handler, parent=None):
         super().__init__(parent)
-        self.students = SerialFileHandler("student_data", "student_metadata.json") # ovo je osnovna lista modela
+        self.handler = handler
+        self.students = handler.get_all()
+        # self.students = FileHandlerFactory()
 
     def get_element(self, index):
         # vratiti studenta na datom redu
-        return self.students.get_all()[index.row()]
+        return self.students[index.row()]
 
     # metode za redefisanje read-only modela
     def rowCount(self, index):
-        return len(self.students.get_all())
+        return len(self.students)
 
     def columnCount(self, index):
-        return 2 # zbog broja atributa koje prikazujemo o studentu
+        return 2  # zbog broja atributa koje prikazujemo o studentu
 
     def data(self, index, role=QtCore.Qt.DisplayRole):
         student = self.get_element(index)
@@ -39,16 +42,16 @@ class StudentModel(QtCore.QAbstractTableModel):
         student = self.get_element(index)
         if value == "":
             return False
-        if index.column() == 0 and role == QtCore.Qt.EditRole: #broj indeksa
+        if index.column() == 0 and role == QtCore.Qt.EditRole:  # broj indeksa
             student.broj_indeksa = value
             self.students.edit(index, student)
 
             return True
-        elif index.column() == 1 and role == QtCore.Qt.EditRole: #broj indeksa
+        elif index.column() == 1 and role == QtCore.Qt.EditRole:  # broj indeksa
             student.ime_prezime = value
             self.students.edit(index, student)
             return True
         return False
 
     def flags(self, index):
-        return super().flags(index) | QtCore.Qt.ItemIsEditable #ili nad bitovima
+        return super().flags(index) | QtCore.Qt.ItemIsEditable  # ili nad bitovima

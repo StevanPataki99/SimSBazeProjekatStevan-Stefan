@@ -3,37 +3,47 @@ from nepolozeni_predmet import NepolozeniPredmet
 from polozeni_predmet import PolozeniPredmet
 import pickle
 from serial_file_handler import SerialFileHandler
+import json
 
 
-# oop = PolozeniPredmet("Objektno Orjentisano Programiranje", "Bla Bla BlA", 10)
-# mat = PolozeniPredmet("Matematika 2", "Bla Bla BlA", 10)
-# stp = PolozeniPredmet("Strukture Podataka I Algoritme", "Bla Bla BlA", 10)
-# mreze = PolozeniPredmet("Mreze", "Bla Bla BlA", 10)
-
-# npoop = NepolozeniPredmet("Objektno Orjentisano Programiranje", "Bla Bla BlA", 2)
-# npmat = NepolozeniPredmet("Matematika 2", "Bla Bla BlA", 3)
-# npstp = NepolozeniPredmet("Strukture Podataka I Algoritme", "Bla Bla BlA", 4)
-# npmreze = NepolozeniPredmet("Mreze", "Bla Bla BlA", 5)
+with open("simsProjekatStevfan/student_metadata.json", "r", encoding="UTF-8") as file:
+    try:
+        student_metadata_json = json.load(file)
+        print(student_metadata_json)
+    except FileNotFoundError as _e:
+        print(_e)
 
 
+oop = PolozeniPredmet("Objektno Orjentisano Programiranje", "Bla Bla BlA", 10)
+mat = PolozeniPredmet("Matematika 2", "Bla Bla BlA", 10)
+stp = PolozeniPredmet("Strukture Podataka I Algoritme", "Bla Bla BlA", 10)
+mreze = PolozeniPredmet("Mreze", "Bla Bla BlA", 10)
 
-# # Inicijalnoi podaci o Studentu
-# data = []
-# data.append(Student("2018/123", "Marko Markovic", [oop, mat, stp, mreze], []))
-# data.append(Student("2018/456", "Pera Peric", [oop], [npmat, npstp, npmreze]))
-# data.append(Student("2018/789", "Stanko Stankovic", [mat], [npoop, npstp, npmreze]))
-
-# #Inicijalnoi podaci o Nastavniku
+npoop = NepolozeniPredmet("Objektno Orjentisano Programiranje", "Bla Bla BlA", 2)
+npmat = NepolozeniPredmet("Matematika 2", "Bla Bla BlA", 3)
+npstp = NepolozeniPredmet("Strukture Podataka I Algoritme", "Bla Bla BlA", 4)
+npmreze = NepolozeniPredmet("Mreze", "Bla Bla BlA", 5)
 
 
 
-# #Poenta sa pickleom je da se podaci upisu u fajl u binarnom formatu. Zasto binarnom? Jer ih nije moguce procitati.
-# with open("student_data", 'wb') as data_file:
-#     pickle.dump(data, data_file) #koristimo pickle da bismo serijalizovali u binarnu datoteku
+# Inicijalnoi podaci o Studentu
+data = []
+data.append(Student("2018/703", "Marko Markovic", [oop, mat, stp, mreze], []))
+data.append(Student("2018/116", "Pera Peric", [oop], [npmat, npstp, npmreze]))
+data.append(Student("2018/980", "Stanko Stankovic", [mat], [npoop, npstp, npmreze]))
 
-# #Isto to je uradjeno i sam nastavnicima.
+#Inicijalnoi podaci o Nastavniku
 
-serial_file_handler_for_students = SerialFileHandler("student_data", "student_metadata.json") #pri instanciranju samo prosledimo putanje do datoteka sa podacima i sa metapodacima
+
+filename = "student_data_"+student_metadata_json[0]['database_type']
+print(filename)
+#Poenta sa pickleom je da se podaci upisu u fajl u binarnom formatu. Zasto binarnom? Jer ih nije moguce procitati.
+with open(filename, 'wb') as data_file:
+    pickle.dump(data, data_file) #koristimo pickle da bismo serijalizovali u binarnu datoteku
+
+#Isto to je uradjeno i sam nastavnicima.
+
+serial_file_handler_for_students = SerialFileHandler(filename, "simsProjekatStevfan/student_metadata.json") #pri instanciranju samo prosledimo putanje do datoteka sa podacima i sa metapodacima
 # #ovo bi se moglo smanjiti na jedan argument za konstrukciju filehandler-a, ukoliko uvedemo neku konvenciju za imenovanje datoteka
 
 # # print(serial_file_handler_for_students.get_one("2018/123").ime)
@@ -69,7 +79,7 @@ serial_file_handler_for_students = SerialFileHandler("student_data", "student_me
 # print((serial_file_handler_for_students.insert_many(student_values)))
 # print(serial_file_handler_for_students.edit("2018/789", umjesto_sabana ))
 
-print("/n/n/nNovi STUDENTI----------------------")
-for student in serial_file_handler_for_students.get_all():
-    print(student.ime_prezime)
+# print("/n/n/nNovi STUDENTI----------------------")
+# for student in serial_file_handler_for_students.get_all():
+#     print(student.id, student.ime_prezime)
 

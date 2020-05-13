@@ -9,13 +9,14 @@ from serial_file_handler import SerialFileHandler
 
 
 class WorkspaceWidget(QtWidgets.QWidget):
-    def __init__(self, parent):
+    def __init__(self, parent, handler):
         super().__init__(parent)
         self.main_layout = QtWidgets.QVBoxLayout()
         self.tab_widget = None
         self.create_tab_widget()
+        self.handler = handler
 
-        self.student_model = self.create_student_dummy_model()
+        self.student_model = StudentModel(self.handler)
         # FIXME: privremeno kao atribut, posle se dobavlja na klik
         #self.polozeni_predmeti_model = self.create_polozeni_predmeti_model(self.student_model.students[0]) # za prvog studenta
 
@@ -72,51 +73,6 @@ class WorkspaceWidget(QtWidgets.QWidget):
     def delete_tab(self, index):
         self.tab_widget.removeTab(index)
 
-    def create_student_dummy_model(self):
-
-        student_model = StudentModel()
-        if len(student_model.students.get_all()) == 0:
-
-            student_model.students.insert_many([
-                    Student("2018270000", "Marko Markovic", [
-                        PolozeniPredmet("SIMS","1", 10),
-                        PolozeniPredmet("BP","11", 8),
-                        PolozeniPredmet("TS","33", 9)
-                    ],
-                    [
-                        NepolozeniPredmet("AR","ne", 1),
-                        NepolozeniPredmet("WD","ef", 2),
-                        NepolozeniPredmet("WP","efefe", 9)
-                    ]),
-                    Student("2018270001", "Janko Jankovic", [
-                        PolozeniPredmet("OP","", 10),
-                        PolozeniPredmet("OOP1","", 8),
-                        PolozeniPredmet("OOP2","", 9)
-                    ],
-                    [
-                        NepolozeniPredmet("SIMS","", 1),
-                        NepolozeniPredmet("WD","", 2),
-                        NepolozeniPredmet("TS","", 3)
-                    ]),
-                    Student("2018270002", "Petar Petrovic", [
-                        PolozeniPredmet("AR","", 10),
-                        PolozeniPredmet("WP","", 8),
-                        PolozeniPredmet("WD","", 9)
-                    ],
-                    [
-                        NepolozeniPredmet("OP","", 1),
-                        NepolozeniPredmet("OOP1","", 2),
-                        NepolozeniPredmet("OOP2","", 9)
-                    ]),
-                    Student("2018270003", "Sima Simic", [
-                        PolozeniPredmet("DM","", 10),
-                        PolozeniPredmet("EJ1","", 8),
-                        PolozeniPredmet("MEN","", 9)
-                    ]),
-                    Student("2018270004", "Lazar Lazarevic")
-                ])
-
-        return student_model
 
     def create_polozeni_predmeti_model(self, student):
         """
