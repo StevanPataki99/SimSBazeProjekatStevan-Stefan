@@ -25,3 +25,5 @@ class SmartPhone():
 
     def make_array(self):
         return [self.brand, self.model, self.price, self.made_in, self.dealer, self.imei_code]
+
+    
