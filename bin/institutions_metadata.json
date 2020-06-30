@@ -1,0 +1,6 @@
+[{
+    "columns": ["signature", "name", "address"],
+    "key": "signature",
+    "linked_files": [],
+    "database_type": "serial"
+}]
