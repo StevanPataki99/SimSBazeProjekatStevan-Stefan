@@ -1,0 +1,6 @@
+[{
+    "columns": ["level_signature", "name"],
+    "key": "level_signature",
+    "linked_files": [],
+    "database_type": "serial"
+}]

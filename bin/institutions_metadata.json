@@ -1,6 +1,6 @@
 [{
-    "columns": ["signature", "name", "address"],
-    "key": "signature",
+    "columns": ["institution_signature", "name", "address"],
+    "key": "institution_signature",
     "linked_files": [],
     "database_type": "serial"
 }]

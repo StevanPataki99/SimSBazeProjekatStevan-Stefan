@@ -1,0 +1,6 @@
+[{
+    "columns": ["institution_signature", "major_signature", "block", "position", "institution_class", "class_signature"],
+    "key": "major_signature",
+    "linked_files": ["subjects_data", "majors_data"],
+    "database_type": "serial"
+}]

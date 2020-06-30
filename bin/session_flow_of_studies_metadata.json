@@ -1,0 +1,6 @@
+[{
+    "columns": ["institution_signature", "major_signature", "student_id", "profession", "current_calendar_year", "year_of_studies", "block", "entrance_position", "date_of_enrolment", "date_of_verification", "espb_start", "espb_end"],
+    "key": "student_id",
+    "linked_files": ["students_data", "majors_data"],
+    "database_type": "serial"
+}]
