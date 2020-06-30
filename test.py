@@ -4,8 +4,7 @@ from data_classes.databse_file_handlers.data_classes.institution import Institut
 from random import randint
 import pickle
 
-linked_data_paths = {"data_path": "bin/smartphone_data",
-                     "metadata_path": "bin/smartphone_metadata.json", "database_type": "serial"}
+
 
 
 # with open("bin/"+file_name, 'wb') as data_file:
@@ -34,7 +33,7 @@ institution_data = [
      "adresa":"Neka adresa 555"
     }
 ]
-student_data = [
+students_data = [
 
     {"institution_signature":"US",
      "profession":"SII",
@@ -236,10 +235,43 @@ session_flow_of_studies = [
     }
 ]
 
-file_name = "session_flow_of_studies_data"
-with open("bin/"+file_name, 'wb') as data_file:
+majors_group_plan = [
+    {
+        "institution_signature": "US",
+        "major_signature": "SDE",
+        "block": "G3",
+        "position": "b1",
+        "institution_class": "CRR",
+        "class_signature": "DM"
+    },
+
+    {
+        "institution_signature": "PMF",
+        "major_signature": "",
+        "block": "F3",
+        "position": "d1",
+        "institution_class": "MRR",
+        "class_signature": "FM1"
+    },    
+
+    {
+        "institution_signature": "FTN",
+        "major_signature": "",
+        "block": "A1",
+        "position": "c1",
+        "institution_class": "ARR",
+        "class_signature": "MEH"
+    }
+]
+
+linked_data_paths = {"data_path": "bin/institutions_data",
+                     "metadata_path": "bin/institutions_metadata.json", "database_type": "serial"}
+
+
+file_name = "institutions"
+with open("data/"+file_name, 'wb') as data_file:
     # koristimo pickle da bismo serijalizovali u binarnu datoteku
-    pickle.dump(session_flow_of_studies, data_file)
+    pickle.dump(linked_data_paths, data_file)
 
 
 
