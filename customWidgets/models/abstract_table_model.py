@@ -15,7 +15,9 @@ class AbstractTableModel(QAbstractTableModel):
         self.file_handler = SerialFileHandler(
             self.original_data_filepath, self.original_metadata_filepath) if self.database_type == "serial" else 0
         self.data_recieved = self.file_handler.get_all()
+        print(self.data_recieved)
 
+    
     def unbox_data_from_clicked_file(self):
         try:
             with open("data/"+self.path_to_file_clicked, "rb") as f:
@@ -40,24 +42,26 @@ class AbstractTableModel(QAbstractTableModel):
         return len(self.data_recieved)
 
     def columnCount(self, index):
-        linked_filed_length = len(
-            self.file_handler.metadata[0]["linked_files"])
-        return len(self.file_handler.metadata[0]["columns"])-linked_filed_length
+        return len(self.file_handler.metadata[0]["columns"])
 
     def column_number(self):
-        linked_filed_length = len(
-            self.file_handler.metadata[0]["linked_files"])
-        return len(self.file_handler.metadata[0]["columns"])-linked_filed_length
+        return len(self.file_handler.metadata[0]["columns"])
 
     def data(self, index, role=QtCore.Qt.DisplayRole):
         single_data_element = self.get_element(index)
-        data_array = single_data_element.make_array()
-
         column_count = len(self.file_handler.metadata[0]["columns"])
+
         for column_header_name in range(0, column_count):
             if index.column() == column_header_name and role == QtCore.Qt.DisplayRole:
-                return str(data_array[column_header_name])
+                return str(single_data_element[self.file_handler.metadata[0]["columns"][column_header_name]])
 
+    def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
+        column_count = len(self.file_handler.metadata[0]["columns"])
+        for column_header_name in range(0, column_count):
+            if section == column_header_name and orientation == QtCore.Qt.Horizontal and role == QtCore.Qt.DisplayRole:
+                return self.file_handler.metadata[0]["columns"][column_header_name]
+
+    #? ZA EDITOVANJE DATA
     def flags(self, index):
         # return super().flags(index) | QtCore.Qt.ItemIsEditable  # ili nad bitovima
 
@@ -67,23 +71,21 @@ class AbstractTableModel(QAbstractTableModel):
                     return ~QtCore.Qt.ItemIsEditable
         return super().flags(index) | QtCore.Qt.ItemIsEditable
 
-    def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
-        column_count = len(self.file_handler.metadata[0]["columns"])
-        for column_header_name in range(0, column_count):
-            if section == column_header_name and orientation == QtCore.Qt.Horizontal and role == QtCore.Qt.DisplayRole:
-                return self.file_handler.metadata[0]["columns"][column_header_name]
-
     def setData(self, index, value, role=QtCore.Qt.EditRole):
         column_count = len(self.file_handler.metadata[0]["columns"])
         single_data_element = self.get_element(index)
-
+        print("Usao")
         if value == "":
             return False
         for column in range(0, column_count):
             if index.column() == column and role == QtCore.Qt.EditRole:
-                setattr(single_data_element,
-                        self.file_handler.metadata[0]["columns"][column], value)
-                self.file_handler.edit(getattr(
-                    single_data_element, self.file_handler.metadata[0]["key"]), single_data_element)
+                
+                print(self.file_handler.metadata[0]["columns"][column])
+                print(value)
+                print(single_data_element)
+                single_data_element[self.file_handler.metadata[0]["columns"][column]] = value
+                # setattr(single_data_element ,self.file_handler.metadata[0]["columns"][column], value)
+                # self.file_handler.edit(getattr(single_data_element, self.file_handler.metadata[0]["key"]), single_data_element)
+                self.file_handler.edit(index, single_data_element)
                 return True
         return False

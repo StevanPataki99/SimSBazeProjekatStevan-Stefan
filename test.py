@@ -14,26 +14,26 @@ import pickle
 institution_data = [
     {"institution_signature":"FTN",
      "name":"Fakultet Tehnickih Nauka",
-     "adresa":"Neka adresa 123"
+     "address":"Neka adresa 123"
     },
     {"institution_signature":"PMF",
      "name":"Prirodno-matematicki Fakultet",
-     "adresa":"Neka adresa 333"
+     "address":"Neka adresa 333"
     },
     {"institution_signature":"US",
      "name":"Univerzitet Singidunum",
-     "adresa":"Neka Adresa 444"
+     "address":"Neka Adresa 444"
     },
     {"institution_signature":"MFN",
      "name":"Medicinski Fakultet Novi Sad",
-     "adresa":"Neka adresa 555"
+     "address":"Neka adresa 555"
     },
     {"institution_signature":"FPN",
      "name":"Fakultet Politickih Nauka",
-     "adresa":"Neka adresa 555"
+     "address":"Neka adresa 555"
     }
 ]
-student_data = [
+students_data = [
 
     {"institution_signature":"US",
      "profession":"SII",
@@ -235,6 +235,7 @@ session_flow_of_studies = [
     }
 ]
 
+<<<<<<< HEAD
 majors_group_plan = [{
     "institution_signature":"US",
     "major_signature":"SDE",
@@ -243,10 +244,44 @@ majors_group_plan = [{
     "institution_class":"b3",
     "class_signature":"DM"
 }]
+=======
+majors_group_plan = [
+    {
+        "institution_signature": "US",
+        "major_signature": "SDE",
+        "block": "G3",
+        "position": "b1",
+        "institution_class": "CRR",
+        "class_signature": "DM"
+    },
+
+    {
+        "institution_signature": "PMF",
+        "major_signature": "",
+        "block": "F3",
+        "position": "d1",
+        "institution_class": "MRR",
+        "class_signature": "FM1"
+    },    
+
+    {
+        "institution_signature": "FTN",
+        "major_signature": "",
+        "block": "A1",
+        "position": "c1",
+        "institution_class": "ARR",
+        "class_signature": "MEH"
+    }
+]
+>>>>>>> 32bb84942d73b73d9f2bb30b64542462b405d723
 
 linked_data_paths = {"data_path": "bin/level_of_studies_data",
                      "metadata_path": "bin/level_of_studies_metadata.json", "database_type": "serial"}
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 32bb84942d73b73d9f2bb30b64542462b405d723
 file_name = "level_of_studies"
 with open("data/"+file_name, 'wb') as data_file:
     # koristimo pickle da bismo serijalizovali u binarnu datoteku

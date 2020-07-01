@@ -1,11 +1,11 @@
-from PySide2.QtWidgets import QMainWindow, QApplication, QAction, QPushButton, QToolBar, QSplashScreen, QDockWidget, QFileSystemModel, QTreeView, QStatusBar, QWidget, QVBoxLayout, QTabWidget, QTableView, QTableWidget, QTableWidgetItem, QAbstractItemView
+from PySide2.QtWidgets import QTableWidgetItem, QMainWindow, QApplication, QAction, QPushButton, QToolBar, QSplashScreen, QDockWidget, QFileSystemModel, QTreeView, QStatusBar, QWidget, QVBoxLayout, QTabWidget, QTableView, QTableWidget, QTableWidgetItem, QAbstractItemView, QLabel
 from PySide2.QtGui import QKeySequence, QPixmap, QIcon
 from PySide2.QtWidgets import QInputDialog, QLineEdit
-from PySide2.QtCore import Qt, QDir
+from PySide2.QtCore import Qt, QDir, QObject, Signal
 import sys
 from customWidgets.models.abstract_table_model import AbstractTableModel
 from customWidgets.table_input_dialog import InsertOneForm
-from data_classes.databse_file_handlers.smartphone import SmartPhone
+from customWidgets.subtables_widget import SubtablesWidget
 
 
 class WorkSpaceWidget(QWidget):
@@ -34,9 +34,21 @@ class WorkSpaceWidget(QWidget):
         self.check_database_type_and_run()
         self.tab_widget.addTab(self.main_table, QIcon(
             "img/iconXLNK.png"), self.file_clicked)
-
+        #!Row click Event Handler
+        self.main_table.clicked.connect(self.handleSubtables)
+        self.handleSubtables()
         self.main_layout.addWidget(self.toolbar)
         self.main_layout.addWidget(self.tab_widget)
+        
+        
+        
+
+    def handleSubtables(self):
+        index=(self.main_table.selectionModel().currentIndex().row())
+        self.subtables_widget = SubtablesWidget(self, index, self.abstract_table_model)
+        self.main_layout.addWidget(self.subtables_widget)
+        print("Widget added")
+        
 
     # TODO Srediti da funkcija bise element iz tabele klikom na dugme delete u ToolBar-u.
     def delete_table_row_tb(self):
@@ -49,7 +61,8 @@ class WorkSpaceWidget(QWidget):
         self.main_layout.addWidget(self.addWindow)
 
         # chekiranje validnosti podataka
-
+    
+    #? Proveara kod unosa podataka
     def check_data(self):
         self.return_data = self.addWindow.final_data
         self.return_metadata = self.addWindow.metadata_columns
@@ -88,3 +101,7 @@ class WorkSpaceWidget(QWidget):
         max_width = 1620 // self.abstract_table_model.column_number()
         for width in range(self.abstract_table_model.column_number()):
             self.main_table.setColumnWidth(width, max_width)
+
+            
+
+       
