@@ -14,23 +14,23 @@ import pickle
 institution_data = [
     {"institution_signature":"FTN",
      "name":"Fakultet Tehnickih Nauka",
-     "adresa":"Neka adresa 123"
+     "address":"Neka adresa 123"
     },
     {"institution_signature":"PMF",
      "name":"Prirodno-matematicki Fakultet",
-     "adresa":"Neka adresa 333"
+     "address":"Neka adresa 333"
     },
     {"institution_signature":"US",
      "name":"Univerzitet Singidunum",
-     "adresa":"Neka Adresa 444"
+     "address":"Neka Adresa 444"
     },
     {"institution_signature":"MFN",
      "name":"Medicinski Fakultet Novi Sad",
-     "adresa":"Neka adresa 555"
+     "address":"Neka adresa 555"
     },
     {"institution_signature":"FPN",
      "name":"Fakultet Politickih Nauka",
-     "adresa":"Neka adresa 555"
+     "address":"Neka adresa 555"
     }
 ]
 students_data = [
@@ -264,11 +264,11 @@ majors_group_plan = [
     }
 ]
 
-linked_data_paths = {"data_path": "bin/institutions_data",
-                     "metadata_path": "bin/institutions_metadata.json", "database_type": "serial"}
+linked_data_paths = {"data_path": "bin/level_of_studies_data",
+                     "metadata_path": "bin/level_of_studies_metadata.json", "database_type": "serial"}
 
 
-file_name = "institutions"
+file_name = "level_of_studies"
 with open("data/"+file_name, 'wb') as data_file:
     # koristimo pickle da bismo serijalizovali u binarnu datoteku
     pickle.dump(linked_data_paths, data_file)

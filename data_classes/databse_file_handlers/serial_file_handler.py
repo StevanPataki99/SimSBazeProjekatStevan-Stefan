@@ -45,7 +45,7 @@ class SerialFileHandler(DataHandler):
 
     def edit(self, id, new_value):
         for d in self.data:
-            if getattr(d, self.metadata[0]["key"]) == id:
+            if d[self.metadata[0]["key"]] == id:
                 index_elementa = self.data.index(d)
                 self.data[index_elementa] = new_value
         self.save_to_file()

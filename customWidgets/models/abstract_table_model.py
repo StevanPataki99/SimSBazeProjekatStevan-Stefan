@@ -48,9 +48,8 @@ class AbstractTableModel(QAbstractTableModel):
 
     def data(self, index, role=QtCore.Qt.DisplayRole):
         single_data_element = self.get_element(index)
-        print(single_data_element)
-
         column_count = len(self.file_handler.metadata[0]["columns"])
+
         for column_header_name in range(0, column_count):
             if index.column() == column_header_name and role == QtCore.Qt.DisplayRole:
                 return str(single_data_element[self.file_handler.metadata[0]["columns"][column_header_name]])
@@ -74,14 +73,18 @@ class AbstractTableModel(QAbstractTableModel):
     def setData(self, index, value, role=QtCore.Qt.EditRole):
         column_count = len(self.file_handler.metadata[0]["columns"])
         single_data_element = self.get_element(index)
-
+        print("Usao")
         if value == "":
             return False
         for column in range(0, column_count):
             if index.column() == column and role == QtCore.Qt.EditRole:
-                setattr(single_data_element,
-                        self.file_handler.metadata[0]["columns"][column], value)
-                self.file_handler.edit(getattr(
-                    single_data_element, self.file_handler.metadata[0]["key"]), single_data_element)
+                
+                print(self.file_handler.metadata[0]["columns"][column])
+                print(value)
+                print(single_data_element)
+                single_data_element[self.file_handler.metadata[0]["columns"][column]] = value
+                # setattr(single_data_element ,self.file_handler.metadata[0]["columns"][column], value)
+                # self.file_handler.edit(getattr(single_data_element, self.file_handler.metadata[0]["key"]), single_data_element)
+                self.file_handler.edit(index, single_data_element)
                 return True
         return False

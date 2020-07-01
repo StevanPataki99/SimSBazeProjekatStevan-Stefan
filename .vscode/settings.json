@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "c:\\Users\\USER\\letsdoit3\\SimSBazeProjekatStevan-Stefan\\Environment\\Scripts\\python.exe",
+    "python.pythonPath": "/Users/stevanpataki/envs/smsvenv/bin/python",
     "python.linting.flake8Enabled": false,
     "python.linting.enabled": true,
     "python.linting.pylintEnabled": true
