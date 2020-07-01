@@ -49,7 +49,8 @@ class WorkSpaceWidget(QWidget):
         self.main_layout.addWidget(self.addWindow)
 
         # chekiranje validnosti podataka
-
+    
+    #? Proveara kod unosa podataka
     def check_data(self):
         self.return_data = self.addWindow.final_data
         self.return_metadata = self.addWindow.metadata_columns
