@@ -5,7 +5,6 @@ from PySide2.QtCore import Qt, QDir, QObject, Signal
 import sys
 from customWidgets.models.abstract_table_model import AbstractTableModel
 from customWidgets.table_input_dialog import InsertOneForm
-from customWidgets.subtables_widget import SubtablesWidget
 
 
 class WorkSpaceWidget(QWidget):
@@ -34,19 +33,24 @@ class WorkSpaceWidget(QWidget):
         self.check_database_type_and_run()
         self.tab_widget.addTab(self.main_table, QIcon(
             "img/iconXLNK.png"), self.file_clicked)
-        #!Row click Event Handler
-        self.main_table.clicked.connect(self.handleSubtables)
-        self.handleSubtables()
         self.main_layout.addWidget(self.toolbar)
         self.main_layout.addWidget(self.tab_widget)
-        
-        
-        
+
+        if len(self.abstract_table_model.file_handler.metadata[0]["linked_files"]) != 0:
+            self.subtables_tabwidget = QTabWidget(self)
+            self.subtables_tabwidget.setTabsClosable(True)  
+            #!Row click Event Handler
+            self.main_table.clicked.connect(self.handleSubtables)   
+            self.main_layout.addWidget(self.subtables_tabwidget) 
 
     def handleSubtables(self):
         index=(self.main_table.selectionModel().currentIndex().row())
-        self.subtables_widget = SubtablesWidget(self, index, self.abstract_table_model)
-        self.main_layout.addWidget(self.subtables_widget)
+
+        self.tabs = [QLabel("label1"), QLabel("label1"), QLabel("label1")]
+        counter = 1
+        for tab in self.tabs:
+            self.subtables_tabwidget.addTab(tab, str(counter))
+            counter += 1 
         print("Widget added")
         
 
@@ -92,12 +96,12 @@ class WorkSpaceWidget(QWidget):
         self.tab_widget = QTabWidget(self)
         self.tab_widget.setTabsClosable(True)
 
+        # makes responsive tabel sizes
     def create_table(self):
         self.main_table = QTableView(self.tab_widget)
         self.main_table.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.main_table.setSelectionMode(QAbstractItemView.SingleSelection)
         self.main_table.setModel(self.abstract_table_model)
-        # makes responsive tabel sizes
         max_width = 1620 // self.abstract_table_model.column_number()
         for width in range(self.abstract_table_model.column_number()):
             self.main_table.setColumnWidth(width, max_width)
