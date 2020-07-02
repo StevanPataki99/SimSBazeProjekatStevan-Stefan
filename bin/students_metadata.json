@@ -1,6 +1,6 @@
 [{
     "columns": ["institution_signature", "profession", "student_id", "surname", "parent_name", "name", "gender", "address", "phone_number", "id_number", "birth_date"],
     "key": "student_id",
-    "linked_files": ["institutions_data"],
+    "linked_files": ["institutions"],
     "database_type": "serial"
 }]

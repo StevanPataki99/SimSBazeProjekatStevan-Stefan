@@ -1,6 +1,6 @@
 [{
     "columns": ["institution_signature", "class_signature", "name", "espb"],
     "key": "class_signature",
-    "linked_files": ["institutions_data"],
+    "linked_files": ["institutions"],
     "database_type": "serial"
 }]

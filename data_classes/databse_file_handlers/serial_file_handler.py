@@ -14,17 +14,17 @@ class SerialFileHandler(DataHandler):
 
     def load_data(self):
         # učitavanje podataka
-        print("usao u load data.")
+        #print("usao u load data.")
         # učitavanje metapodataka
         with open(self.meta_filepath) as meta_file:
             self.metadata = json.load(meta_file)
-            print("ocitao metafile")
+            #print("ocitao metafile")
         try:
             with open(self.filepath, 'rb') as dfile:
-                print("Otvorio filepath za main")
+                #print("Otvorio filepath za main")
                 # koristimo pickle za deserijalizaciju podataka
                 self.data = pickle.load(dfile)
-                print("DODJI DO OVDJE")
+                #print("DODJI DO OVDJE")
         except (FileNotFoundError) as e:
             print("Ne postoji File. Error message: {}".format(e))
 

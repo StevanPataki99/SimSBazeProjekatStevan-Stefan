@@ -1,6 +1,6 @@
 [{
     "columns": ["institution_signature", "level_signature", "major_signature", "major_name"],
     "key": "major_signature",
-    "linked_files": ["level_of_studies_data", "institutions_data"],
+    "linked_files": ["level_of_studies", "institutions"],
     "database_type": "serial"
 }]

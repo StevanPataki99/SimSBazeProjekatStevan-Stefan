@@ -4,6 +4,7 @@ from PySide2.QtWidgets import QInputDialog, QLineEdit
 from PySide2.QtCore import Qt, QDir, QObject, Signal
 import sys
 from customWidgets.models.abstract_table_model import AbstractTableModel
+from customWidgets.models.abstract_subtable_model import AbstractSubtableModel
 from customWidgets.table_input_dialog import InsertOneForm
 
 
@@ -29,6 +30,7 @@ class WorkSpaceWidget(QWidget):
         self.file_clicked = file_clicked
         self.abstract_table_model = AbstractTableModel(self.file_clicked)
         self.database_type = self.abstract_table_model.database_type
+        self.linked_files_lenght = len(self.abstract_table_model.file_handler.metadata[0]["linked_files"])
         self.create_tab_widget()
         self.check_database_type_and_run()
         self.tab_widget.addTab(self.main_table, QIcon(
@@ -36,23 +38,30 @@ class WorkSpaceWidget(QWidget):
         self.main_layout.addWidget(self.toolbar)
         self.main_layout.addWidget(self.tab_widget)
 
-        if len(self.abstract_table_model.file_handler.metadata[0]["linked_files"]) != 0:
+        if self.linked_files_lenght != 0:
+            self.init_tabs = False
             self.subtables_tabwidget = QTabWidget(self)
             self.subtables_tabwidget.setTabsClosable(True)  
-            #!Row click Event Handler
-            self.main_table.clicked.connect(self.handleSubtables)   
+            #! Row click Event Handler
+            self.main_table.clicked.connect(self.getSubtableTabs)   
             self.main_layout.addWidget(self.subtables_tabwidget) 
 
-    def handleSubtables(self):
-        index=(self.main_table.selectionModel().currentIndex().row())
+    def getSubtableTabs(self):   
+        for i in range(self.linked_files_lenght):
+            self.subtables_tabwidget.removeTab(0)
+        index = (self.main_table.selectionModel().currentIndex().row())
 
-        self.tabs = [QLabel("label1"), QLabel("label1"), QLabel("label1")]
-        counter = 1
-        for tab in self.tabs:
-            self.subtables_tabwidget.addTab(tab, str(counter))
-            counter += 1 
-        print("Widget added")
-        
+        for sub_tabel in self.abstract_table_model.file_handler.metadata[0]["linked_files"]:
+            subtable_model = AbstractSubtableModel(sub_tabel, self.abstract_table_model.data_recieved[index])
+            table = QTableView(self.subtables_tabwidget)
+            table.setSelectionBehavior(QAbstractItemView.SelectRows)
+            table.setSelectionMode(QAbstractItemView.SingleSelection)
+            table.setModel(subtable_model)
+            max_width = 1620 // subtable_model.column_number()
+            for width in range(self.abstract_table_model.column_number()):
+                table.setColumnWidth(width, max_width)
+            self.subtables_tabwidget.addTab(table, sub_tabel)
+            
 
     # TODO Srediti da funkcija bise element iz tabele klikom na dugme delete u ToolBar-u.
     def delete_table_row_tb(self):

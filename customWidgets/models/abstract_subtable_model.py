@@ -5,27 +5,39 @@ import pickle
 from PySide2 import QtCore
 
 
-class AbstractTableModel(QAbstractTableModel):
-    def __init__(self, file_clicked):
+class AbstractSubtableModel(QAbstractTableModel):
+    def __init__(self, linked_file, clicked_item_data):
         super().__init__()
-        self.path_to_file_clicked = file_clicked
-        self.binary_data_unpacked = None
+        self.linked_file = linked_file
+        self.clicked_item_data = clicked_item_data
+        # print(self.linked_file)
+        # print(self.clicked_item_data)
+        #self.binary_data_unpacked = None
         self.unbox_data_from_clicked_file()
         # TODO Srediti i slucaj kada je database type == 'sequentail'
         self.file_handler = SerialFileHandler(
-            self.original_data_filepath, self.original_metadata_filepath) if self.database_type == "serial" else 0
-        self.data_recieved = self.file_handler.get_all()
+           self.original_data_filepath, self.original_metadata_filepath) if self.database_type == "serial" else 0
+        self.raw_data = self.file_handler.get_all()
+        self.data_recieved = [self.filter_data()]
 
     
     def unbox_data_from_clicked_file(self):
         try:
-            with open("data/"+self.path_to_file_clicked, "rb") as f:
+            with open("data/"+self.linked_file, "rb") as f:
                 self.binary_data_unpacked = pickle.load(f)
                 self.original_data_filepath = self.binary_data_unpacked["data_path"]
                 self.original_metadata_filepath = self.binary_data_unpacked["metadata_path"]
                 self.database_type = self.binary_data_unpacked["database_type"]
         except FileNotFoundError as e:
             print('File not found, error message {}'.format(e))
+    
+    def filter_data(self):
+        filter = str(self.clicked_item_data[self.file_handler.metadata[0]["key"]])
+        
+        for data in self.raw_data:
+            if data[self.file_handler.metadata[0]["key"]] == filter:
+                return data
+                
 
     def get_element(self, index):
         return self.data_recieved[index.row()]
@@ -64,27 +76,28 @@ class AbstractTableModel(QAbstractTableModel):
     def flags(self, index):
         # return super().flags(index) | QtCore.Qt.ItemIsEditable  # ili nad bitovima
 
-        for i in range(len(self.file_handler.metadata[0]["columns"])):
-            if self.file_handler.metadata[0]["columns"][i] == self.file_handler.metadata[0]["key"]:
-                if index.column() == i:
-                    return ~QtCore.Qt.ItemIsEditable
+        # for i in range(len(self.file_handler.metadata[0]["columns"])):
+        #     if self.file_handler.metadata[0]["columns"][i] == self.file_handler.metadata[0]["key"]:
+        #         if index.column() == i:
+        #             return ~QtCore.Qt.ItemIsEditable
         return super().flags(index) | QtCore.Qt.ItemIsEditable
 
     def setData(self, index, value, role=QtCore.Qt.EditRole):
-        column_count = len(self.file_handler.metadata[0]["columns"])
-        single_data_element = self.get_element(index)
-        print("Usao")
-        if value == "":
-            return False
-        for column in range(0, column_count):
-            if index.column() == column and role == QtCore.Qt.EditRole:
+        # column_count = len(self.file_handler.metadata[0]["columns"])
+        # single_data_element = self.get_element(index)
+        # print("Usao")
+        # if value == "":
+        #     return False
+        # for column in range(0, column_count):
+        #     if index.column() == column and role == QtCore.Qt.EditRole:
                 
-                print(self.file_handler.metadata[0]["columns"][column])
-                print(value)
-                print(single_data_element)
-                single_data_element[self.file_handler.metadata[0]["columns"][column]] = value
-                # setattr(single_data_element ,self.file_handler.metadata[0]["columns"][column], value)
-                # self.file_handler.edit(getattr(single_data_element, self.file_handler.metadata[0]["key"]), single_data_element)
-                self.file_handler.edit(index, single_data_element)
-                return True
-        return False
+        #         print(self.file_handler.metadata[0]["columns"][column])
+        #         print(value)
+        #         print(single_data_element)
+        #         single_data_element[self.file_handler.metadata[0]["columns"][column]] = value
+        #         # setattr(single_data_element ,self.file_handler.metadata[0]["columns"][column], value)
+        #         # self.file_handler.edit(getattr(single_data_element, self.file_handler.metadata[0]["key"]), single_data_element)
+        #         self.file_handler.edit(index, single_data_element)
+        #         return True
+        # return False
+        return None
