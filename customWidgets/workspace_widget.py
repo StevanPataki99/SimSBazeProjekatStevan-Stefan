@@ -74,16 +74,24 @@ class WorkSpaceWidget(QWidget):
         i = 0
         for data in self.return_data:
             if data.get(self.return_metadata[i]) == "" or data.get(self.return_metadata[i]) == " " or data.get(self.return_metadata[i]) == None:
-                print("Nije uredu")
+                print("Data input not valid.")
                 not_valid = True
             else:
-                print("sve ok")
+                print("Data input is valid.")
             i += 1
 
         if not_valid != True:
-            self.new_instanc = SmartPhone(self.return_data[0]["brand"], self.return_data[1]["model"], self.return_data[2]["price"],
-                                          self.return_data[3]["made_in"], self.return_data[4]["dealer"], self.return_data[5]["imei_code"], self.return_data[6]["stores"])
-            self.abstract_table_model.file_handler.insert(self.new_instanc)
+            to_add_dictionary = {}
+            print(len(self.addWindow.metadata_columns))
+            print(self.addWindow.metadata_columns)
+            counter = 0
+            while counter < len(self.addWindow.metadata_columns):
+                print(self.addWindow.metadata_columns[counter])
+                to_add_dictionary[self.addWindow.metadata_columns[counter]] = self.return_data[counter][self.addWindow.metadata_columns[counter]]
+                counter += 1            
+            print("This is the dictionary: {}".format(to_add_dictionary))
+            self.abstract_table_model.file_handler.insert(to_add_dictionary)
+            print("New instance added.")
 
     def check_database_type_and_run(self):
         if self.database_type == "serial" or self.database_type == "sequential":
