@@ -1,9 +1,8 @@
-from PySide2.QtWidgets import QMainWindow, QApplication, QAction, QPushButton, QToolBar, QSplashScreen, QDockWidget, QFileSystemModel, QTreeView, QStatusBar, QLabel, QMessageBox
+from PySide2.QtWidgets import QMainWindow, QApplication, QAction, QPushButton, QToolBar, QSplashScreen, QDockWidget, QFileSystemModel, QTreeView, QStatusBar, QLabel, QMessageBox, QFileIconProvider
 from PySide2.QtGui import QKeySequence, QPixmap, QIcon
 from PySide2.QtCore import Qt, QDir
 import sys
 import os
-
 from customWidgets.workspace_widget import WorkSpaceWidget
 
 
@@ -58,12 +57,16 @@ class MainWindow(QMainWindow):
         dock_widget = QDockWidget("EXPLORER", self)
         # File System Model
         self.file_system_model = QFileSystemModel()
+        self.icon = QIcon("img/system_binary.png")
+        # self.file_system_model.setIconProvider(QFileIconProvider(self.icon))
+
         self.file_system_model.setRootPath(QDir.currentPath())
         # SET => Tree View MOdel
         self.tree_view = QTreeView()
         self.tree_view.setModel(self.file_system_model)
         self.tree_view.setRootIndex(
             self.file_system_model.index(QDir.currentPath() + "/data"))
+        
         self.tree_view.clicked.connect(self.file_clicked_handler)
         dock_widget.setWidget(self.tree_view)
         dock_widget.setFloating(False)

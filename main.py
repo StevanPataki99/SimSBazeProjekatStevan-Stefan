@@ -1,5 +1,5 @@
-from PySide2.QtWidgets import QApplication, QSplashScreen, QStyleFactory
-from PySide2.QtGui import QPixmap
+from PySide2.QtWidgets import QApplication, QSplashScreen, QStyleFactory, QLabel
+from PySide2.QtGui import QPixmap, QMovie
 from customWidgets.main_window import MainWindow
 from PySide2 import QtGui
 import sys
