@@ -4,6 +4,7 @@ from PySide2.QtCore import Qt, QDir
 import sys
 import os
 from customWidgets.workspace_widget import WorkSpaceWidget
+from customWidgets.fili_icon_provider import FileIconProvider
 
 
 class MainWindow(QMainWindow):
@@ -58,7 +59,10 @@ class MainWindow(QMainWindow):
         # File System Model
         self.file_system_model = QFileSystemModel()
         self.icon = QIcon("img/system_binary.png")
-        # self.file_system_model.setIconProvider(QFileIconProvider(self.icon))
+
+        self.file_system_model.setIconProvider(FileIconProvider())
+
+
         self.file_system_model.setRootPath(QDir.currentPath())
         # SET => Tree View MOdel
         self.tree_view = QTreeView()
