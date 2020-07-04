@@ -11,6 +11,8 @@ class WorkSpaceWidget(QWidget):
     def __init__(self, parent, file_clicked):
         super().__init__(parent)
         self.main_layout = QVBoxLayout()
+        self.addWindow = None
+
         # Tool Bar
         self.toolbar = QToolBar(self)
         # delete action on toolbar
@@ -52,7 +54,7 @@ class WorkSpaceWidget(QWidget):
             self.subtables_tabwidget.addTab(tab, str(counter))
             counter += 1 
         print("Widget added")
-        
+
 
     # TODO Srediti da funkcija bise element iz tabele klikom na dugme delete u ToolBar-u.
     def delete_table_row_tb(self):
@@ -60,9 +62,12 @@ class WorkSpaceWidget(QWidget):
 
     # TODO srediti dodavnje u tabelu.
     def add_table_row_handler(self):
+        #TODO SREDITI OVO DA SE SAMO JEDNOM MOZE POKAZATI INPUT DIALOG A NE VISE PUTA.
         self.addWindow = InsertOneForm(
             self.abstract_table_model.file_handler.metadata[0]["columns"], self.check_data)
+
         self.main_layout.addWidget(self.addWindow)
+        self.add_one_action_tb.setEnabled(False)   
 
         # chekiranje validnosti podataka
     
@@ -92,6 +97,7 @@ class WorkSpaceWidget(QWidget):
             print("This is the dictionary: {}".format(to_add_dictionary))
             self.abstract_table_model.file_handler.insert(to_add_dictionary)
             print("New instance added.")
+            self.add_one_action_tb.setEnabled(True)
 
     def check_database_type_and_run(self):
         if self.database_type == "serial" or self.database_type == "sequential":
