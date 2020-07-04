@@ -59,7 +59,6 @@ class MainWindow(QMainWindow):
         self.file_system_model = QFileSystemModel()
         self.icon = QIcon("img/system_binary.png")
         # self.file_system_model.setIconProvider(QFileIconProvider(self.icon))
-
         self.file_system_model.setRootPath(QDir.currentPath())
         # SET => Tree View MOdel
         self.tree_view = QTreeView()
