@@ -59,14 +59,24 @@ class WorkSpaceWidget(QWidget):
     def delete_table_row_tb(self):
         print("Ugraditi funkciju za brisanje reda iz tabele.")
         index=(self.main_table.selectionModel().currentIndex().row())
+        if index == -1:
+            print("You have to select a record from the table for deletion.")
+        else:
+            print("You have chosen a record with number {}".format(index))    
         self.delete_message_box = QMessageBox()
         self.delete_message_box.setIcon(QMessageBox.Warning)
         self.delete_message_box.setWindowTitle("Warning!")
-        self.delete_message_box.setText("Are you sure that you want to delete this record? It will be deleted permanently.")
+        self.delete_message_box.setText("Are you sure that you want to delete this record?")
+        self.delete_message_box.setInformativeText("It will be deleted permanently.")
         self.delete_message_box.addButton(QMessageBox.StandardButton.Yes)
         self.delete_message_box.addButton(QMessageBox.StandardButton.No)
         self.delete_message_box.setDefaultButton(QMessageBox.StandardButton.No)
-        show_message_box = self.delete_message_box.exec_()
+        button_pressed = self.delete_message_box.exec_()
+        
+        if button_pressed == QMessageBox.No:
+            print("User doesn't want to delete a selected record from the table.")
+        else:
+            print("User wants to delete a selected record from the table. ")    
         # self.abstract_table_model.file_handler.delete_one(str(index))
         
 
@@ -101,7 +111,7 @@ class WorkSpaceWidget(QWidget):
                 print(self.addWindow.metadata_columns[counter])
                 to_add_dictionary[self.addWindow.metadata_columns[counter]] = self.return_data[counter][self.addWindow.metadata_columns[counter]]
                 counter += 1     
-                
+
             #?Letting the file handler to insert that new instance which user provided input data for.
             self.abstract_table_model.file_handler.insert(to_add_dictionary)
 

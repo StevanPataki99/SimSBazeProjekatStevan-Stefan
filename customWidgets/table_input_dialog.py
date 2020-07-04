@@ -25,7 +25,7 @@ class InsertOneForm(QDialog):
     def createFormGroupBox(self):
         print(self.metadata_columns)
         self.formGroupBox = QGroupBox(
-            "Populate the data needed for this table.")
+            "Populate data needed for this table.")
         self.layout = QFormLayout()
         # metadata_columns = ["a", "b", "c", "d"]
 
