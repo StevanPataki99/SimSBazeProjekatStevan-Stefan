@@ -47,7 +47,6 @@ class WorkSpaceWidget(QWidget):
             self.main_table.clicked.connect(self.getSubtableTabs)   
             self.main_layout.addWidget(self.subtables_tabwidget) 
 
-<<<<<<< HEAD
     def getSubtableTabs(self):   
         for i in range(self.linked_files_lenght):
             self.subtables_tabwidget.removeTab(0)
@@ -64,7 +63,7 @@ class WorkSpaceWidget(QWidget):
                 table.setColumnWidth(width, max_width)
             self.subtables_tabwidget.addTab(table, sub_tabel)
             
-=======
+
     def handleSubtables(self):
         index=(self.main_table.selectionModel().currentIndex().row())
 
@@ -75,7 +74,6 @@ class WorkSpaceWidget(QWidget):
             counter += 1 
         print("Widget added")
 
->>>>>>> origin/version5
 
     # TODO Srediti da funkcija bise element iz tabele klikom na dugme delete u ToolBar-u.
     def delete_table_row_tb(self):
