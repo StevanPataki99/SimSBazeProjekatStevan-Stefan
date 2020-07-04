@@ -11,5 +11,5 @@ class FileIconProvider(QFileIconProvider):
         if isinstance(parameter, QFileInfo):
             info = parameter
             if info.suffix() == "":
-                return QIcon("img/bfiles_icon.png")
+                return QIcon("img/bsystem_icon.png")
         return super(FileIconProvider, self).icon(parameter)
