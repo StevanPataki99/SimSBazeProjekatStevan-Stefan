@@ -16,7 +16,12 @@ class AbstractTableModel(QAbstractTableModel):
             self.original_data_filepath, self.original_metadata_filepath) if self.database_type == "serial" else 0
         self.data_recieved = self.file_handler.get_all()
         print(self.data_recieved)
+        # self.dataChanged.connect(self.update)
 
+
+    # def update(self):
+    #     self.update()
+    #     print("Update called.!!!!!!")
     
     def unbox_data_from_clicked_file(self):
         try:

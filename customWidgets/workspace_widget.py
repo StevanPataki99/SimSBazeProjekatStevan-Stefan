@@ -1,4 +1,4 @@
-from PySide2.QtWidgets import QTableWidgetItem, QMainWindow, QApplication, QAction, QPushButton, QToolBar, QSplashScreen, QDockWidget, QFileSystemModel, QTreeView, QStatusBar, QWidget, QVBoxLayout, QTabWidget, QTableView, QTableWidget, QTableWidgetItem, QAbstractItemView, QLabel
+from PySide2.QtWidgets import QTableWidgetItem, QMainWindow, QApplication, QAction, QPushButton, QToolBar, QSplashScreen, QDockWidget, QFileSystemModel, QTreeView, QStatusBar, QWidget, QVBoxLayout, QTabWidget, QTableView, QTableWidget, QTableWidgetItem, QAbstractItemView, QLabel, QMessageBox
 from PySide2.QtGui import QKeySequence, QPixmap, QIcon
 from PySide2.QtWidgets import QInputDialog, QLineEdit
 from PySide2.QtCore import Qt, QDir, QObject, Signal
@@ -11,7 +11,6 @@ class WorkSpaceWidget(QWidget):
     def __init__(self, parent, file_clicked):
         super().__init__(parent)
         self.main_layout = QVBoxLayout()
-        self.addWindow = None
 
         # Tool Bar
         self.toolbar = QToolBar(self)
@@ -59,18 +58,26 @@ class WorkSpaceWidget(QWidget):
     # TODO Srediti da funkcija bise element iz tabele klikom na dugme delete u ToolBar-u.
     def delete_table_row_tb(self):
         print("Ugraditi funkciju za brisanje reda iz tabele.")
+        index=(self.main_table.selectionModel().currentIndex().row())
+        self.delete_message_box = QMessageBox()
+        self.delete_message_box.setIcon(QMessageBox.Warning)
+        self.delete_message_box.setWindowTitle("Warning!")
+        self.delete_message_box.setText("Are you sure that you want to delete this record? It will be deleted permanently.")
+        self.delete_message_box.addButton(QMessageBox.StandardButton.Yes)
+        self.delete_message_box.addButton(QMessageBox.StandardButton.No)
+        self.delete_message_box.setDefaultButton(QMessageBox.StandardButton.No)
+        show_message_box = self.delete_message_box.exec_()
+        # self.abstract_table_model.file_handler.delete_one(str(index))
+        
 
-    # TODO srediti dodavnje u tabelu.
+    #?Works fine.
     def add_table_row_handler(self):
-        #TODO SREDITI OVO DA SE SAMO JEDNOM MOZE POKAZATI INPUT DIALOG A NE VISE PUTA.
         self.addWindow = InsertOneForm(
             self.abstract_table_model.file_handler.metadata[0]["columns"], self.check_data)
-
         self.main_layout.addWidget(self.addWindow)
         self.add_one_action_tb.setEnabled(False)   
 
-        # chekiranje validnosti podataka
-    
+    # data validation
     #? Proveara kod unosa podataka
     def check_data(self):
         self.return_data = self.addWindow.final_data
@@ -86,17 +93,27 @@ class WorkSpaceWidget(QWidget):
             i += 1
 
         if not_valid != True:
+            #?Dict where user input data will be stored.
             to_add_dictionary = {}
-            print(len(self.addWindow.metadata_columns))
-            print(self.addWindow.metadata_columns)
+
             counter = 0
             while counter < len(self.addWindow.metadata_columns):
                 print(self.addWindow.metadata_columns[counter])
                 to_add_dictionary[self.addWindow.metadata_columns[counter]] = self.return_data[counter][self.addWindow.metadata_columns[counter]]
-                counter += 1            
-            print("This is the dictionary: {}".format(to_add_dictionary))
+                counter += 1     
+                
+            #?Letting the file handler to insert that new instance which user provided input data for.
             self.abstract_table_model.file_handler.insert(to_add_dictionary)
-            print("New instance added.")
+
+            #?QMessageBox for alerting the user about successful adding of the new instance to the table.
+            self.message_box = QMessageBox()
+            self.message_box.setWindowTitle("Success!")
+            self.message_box.setText("Successfuly added a record to the table.")
+            self.message_box.setIcon(QMessageBox.Information)
+            #?Showing QMessageBox.
+            x = self.message_box.exec_()
+
+            #?Making the AddRow Action Enabled again after the new record is added to the table.
             self.add_one_action_tb.setEnabled(True)
 
     def check_database_type_and_run(self):
@@ -109,6 +126,7 @@ class WorkSpaceWidget(QWidget):
     def create_tab_widget(self):
         self.tab_widget = QTabWidget(self)
         self.tab_widget.setTabsClosable(True)
+        self.tab_widget.isMovable()
 
         # makes responsive tabel sizes
     def create_table(self):
