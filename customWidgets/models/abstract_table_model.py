@@ -15,6 +15,10 @@ class AbstractTableModel(QAbstractTableModel):
         self.file_handler = SerialFileHandler(
             self.original_data_filepath, self.original_metadata_filepath) if self.database_type == "serial" else 0
         self.data_recieved = self.file_handler.get_all()
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/version5
 
     
     def unbox_data_from_clicked_file(self):

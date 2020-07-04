@@ -1,4 +1,4 @@
-from PySide2.QtWidgets import QMainWindow, QApplication, QAction, QPushButton, QToolBar, QSplashScreen, QDockWidget, QFileSystemModel, QTreeView, QStatusBar, QLabel
+from PySide2.QtWidgets import QMainWindow, QApplication, QAction, QPushButton, QToolBar, QSplashScreen, QDockWidget, QFileSystemModel, QTreeView, QStatusBar, QLabel, QMessageBox
 from PySide2.QtGui import QKeySequence, QPixmap, QIcon
 from PySide2.QtCore import Qt, QDir
 import sys

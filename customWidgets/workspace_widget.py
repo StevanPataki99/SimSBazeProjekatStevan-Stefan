@@ -1,4 +1,4 @@
-from PySide2.QtWidgets import QTableWidgetItem, QMainWindow, QApplication, QAction, QPushButton, QToolBar, QSplashScreen, QDockWidget, QFileSystemModel, QTreeView, QStatusBar, QWidget, QVBoxLayout, QTabWidget, QTableView, QTableWidget, QTableWidgetItem, QAbstractItemView, QLabel
+from PySide2.QtWidgets import QTableWidgetItem, QMainWindow, QApplication, QAction, QPushButton, QToolBar, QSplashScreen, QDockWidget, QFileSystemModel, QTreeView, QStatusBar, QWidget, QVBoxLayout, QTabWidget, QTableView, QTableWidget, QTableWidgetItem, QAbstractItemView, QLabel, QMessageBox
 from PySide2.QtGui import QKeySequence, QPixmap, QIcon
 from PySide2.QtWidgets import QInputDialog, QLineEdit
 from PySide2.QtCore import Qt, QDir, QObject, Signal
@@ -12,6 +12,7 @@ class WorkSpaceWidget(QWidget):
     def __init__(self, parent, file_clicked):
         super().__init__(parent)
         self.main_layout = QVBoxLayout()
+
         # Tool Bar
         self.toolbar = QToolBar(self)
         # delete action on toolbar
@@ -46,6 +47,7 @@ class WorkSpaceWidget(QWidget):
             self.main_table.clicked.connect(self.getSubtableTabs)   
             self.main_layout.addWidget(self.subtables_tabwidget) 
 
+<<<<<<< HEAD
     def getSubtableTabs(self):   
         for i in range(self.linked_files_lenght):
             self.subtables_tabwidget.removeTab(0)
@@ -62,37 +64,109 @@ class WorkSpaceWidget(QWidget):
                 table.setColumnWidth(width, max_width)
             self.subtables_tabwidget.addTab(table, sub_tabel)
             
+=======
+    def handleSubtables(self):
+        index=(self.main_table.selectionModel().currentIndex().row())
+
+        self.tabs = [QLabel("label1"), QLabel("label1"), QLabel("label1")]
+        counter = 1
+        for tab in self.tabs:
+            self.subtables_tabwidget.addTab(tab, str(counter))
+            counter += 1 
+        print("Widget added")
+
+>>>>>>> origin/version5
 
     # TODO Srediti da funkcija bise element iz tabele klikom na dugme delete u ToolBar-u.
     def delete_table_row_tb(self):
-        print("Ugraditi funkciju za brisanje reda iz tabele.")
+        index=(self.main_table.selectionModel().currentIndex().row())
+        if index == -1:
+            self.choose_record_to_delete = QMessageBox()
+            self.choose_record_to_delete.setIcon(QMessageBox.Warning)
+            self.choose_record_to_delete.setWindowTitle("Message")
+            self.choose_record_to_delete.setText("You have to select the record from the table which you want to be deleted.")
+            self.choose_record_to_delete.setInformativeText("Then click 'DELETE TABLE ROW' button again.")
+            okay_button = self.choose_record_to_delete.exec_()
+            return
+        else:
+            print("You have chosen a record with number {}".format(index))    
+            self.delete_message_box = QMessageBox()
+            self.delete_message_box.setIcon(QMessageBox.Warning)
+            self.delete_message_box.setWindowTitle("Warning!")
+            self.delete_message_box.setText("Are you sure that you want to delete this record?")
+            self.delete_message_box.setInformativeText("It will be deleted permanently.")
+            self.delete_message_box.addButton(QMessageBox.StandardButton.Yes)
+            self.delete_message_box.addButton(QMessageBox.StandardButton.No)
+            self.delete_message_box.setDefaultButton(QMessageBox.StandardButton.No)
+            button_pressed = self.delete_message_box.exec_()
+            
+            if button_pressed == QMessageBox.No:
+                print("User doesn't want to delete a selected record from the table.")
+            else:
+                print("User wants to delete a selected record from the table. ")    
+                # self.abstract_table_model.file_handler.delete_one(index)
+                self.abstract_table_model.file_handler.delete_one(self.abstract_table_model.file_handler.data[index][self.abstract_table_model.file_handler.metadata[0]['key']])
+                print("Record number {} successfuly deleted.".format(index))
 
-    # TODO srediti dodavnje u tabelu.
+    #?Works fine.
     def add_table_row_handler(self):
         self.addWindow = InsertOneForm(
             self.abstract_table_model.file_handler.metadata[0]["columns"], self.check_data)
         self.main_layout.addWidget(self.addWindow)
+        self.add_one_action_tb.setEnabled(False)   
 
-        # chekiranje validnosti podataka
-    
+    # data validation
     #? Proveara kod unosa podataka
     def check_data(self):
         self.return_data = self.addWindow.final_data
         self.return_metadata = self.addWindow.metadata_columns
-        not_valid = False
+        not_valid = False                                      
         i = 0
         for data in self.return_data:
-            if data.get(self.return_metadata[i]) == "" or data.get(self.return_metadata[i]) == " " or data.get(self.return_metadata[i]) == None:
-                print("Nije uredu")
+            if data.get(self.return_metadata[i]) == "" or data.get(self.return_metadata[i].strip()) == "" or data.get(self.return_metadata[i]) == None:
                 not_valid = True
             else:
-                print("sve ok")
+                print("Data input is valid.")
             i += 1
 
         if not_valid != True:
-            self.new_instanc = SmartPhone(self.return_data[0]["brand"], self.return_data[1]["model"], self.return_data[2]["price"],
-                                          self.return_data[3]["made_in"], self.return_data[4]["dealer"], self.return_data[5]["imei_code"], self.return_data[6]["stores"])
-            self.abstract_table_model.file_handler.insert(self.new_instanc)
+            #?Dict where user input data will be stored.
+            to_add_dictionary = {}
+
+            counter = 0
+            while counter < len(self.addWindow.metadata_columns):
+                print(self.addWindow.metadata_columns[counter])
+                to_add_dictionary[self.addWindow.metadata_columns[counter]] = self.return_data[counter][self.addWindow.metadata_columns[counter]]
+                counter += 1     
+
+            #?Letting the file handler to insert that new instance which user provided input data for.
+            self.abstract_table_model.file_handler.insert(to_add_dictionary)
+
+            #?QMessageBox for alerting the user about successful adding of the new instance to the table.
+            self.message_box = QMessageBox()
+            self.message_box.setWindowTitle("Success!")
+            self.message_box.setText("Successfuly added a record to the table.")
+            self.message_box.setIcon(QMessageBox.Information)
+            #?Showing QMessageBox.
+            x = self.message_box.exec_()
+
+            self.main_layout.removeWidget(self.addWindow)
+            self.addWindow.deleteLater()
+            self.addWindow = None
+
+            #?Making the AddRow Action Enabled again after the new record is added to the table.
+            self.add_one_action_tb.setEnabled(True)
+        else:
+            not_valid_box = QMessageBox()
+            not_valid_box.setWindowTitle("Warning!")
+            not_valid_box.setText("Input fields must have value and can not be empty.")
+            not_valid_box.setIcon(QMessageBox.Information)
+            show_not_valid_box = not_valid_box.exec_()
+
+            self.main_layout.removeWidget(self.addWindow)
+            self.addWindow.deleteLater()
+            self.addWindow = None    
+            self.add_one_action_tb.setEnabled(True)
 
     def check_database_type_and_run(self):
         if self.database_type == "serial" or self.database_type == "sequential":
@@ -104,6 +178,7 @@ class WorkSpaceWidget(QWidget):
     def create_tab_widget(self):
         self.tab_widget = QTabWidget(self)
         self.tab_widget.setTabsClosable(True)
+        self.tab_widget.isMovable()
 
         # makes responsive tabel sizes
     def create_table(self):

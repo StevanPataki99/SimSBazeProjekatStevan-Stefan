@@ -56,8 +56,7 @@ class SerialFileHandler(DataHandler):
 
     def delete_one(self, id):
         for d in self.data:
-            print(str(self.data))
-            if getattr(d, (self.metadata["key"])) == id:
+            if d[self.metadata[0]["key"]] == id:
                 index_elementa = self.data.index(d)
                 del self.data[index_elementa]
                 print(str(self.data))

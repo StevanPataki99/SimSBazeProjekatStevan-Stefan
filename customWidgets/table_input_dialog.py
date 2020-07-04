@@ -12,6 +12,8 @@ class InsertOneForm(QDialog):
         self.data_asigned = []
         self.createFormGroupBox()
         self.on_add_handler = on_add_handler
+        #TODO srediti da ovo ima i dugme za exit. Da bude closable..
+        # self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint, True)
 
         mainLayout = QVBoxLayout()
         mainLayout.addWidget(self.formGroupBox)
@@ -23,7 +25,7 @@ class InsertOneForm(QDialog):
     def createFormGroupBox(self):
         print(self.metadata_columns)
         self.formGroupBox = QGroupBox(
-            "Populate the data needed for this table.")
+            "Populate data needed for this table.")
         self.layout = QFormLayout()
         # metadata_columns = ["a", "b", "c", "d"]
 

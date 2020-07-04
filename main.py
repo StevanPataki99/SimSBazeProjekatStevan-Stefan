@@ -1,6 +1,7 @@
-from PySide2.QtWidgets import QApplication, QSplashScreen
+from PySide2.QtWidgets import QApplication, QSplashScreen, QStyleFactory
 from PySide2.QtGui import QPixmap
 from customWidgets.main_window import MainWindow
+from PySide2 import QtGui
 import sys
 import time
 
