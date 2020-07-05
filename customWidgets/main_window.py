@@ -5,6 +5,7 @@ import sys
 import os
 from customWidgets.workspace_widget import WorkSpaceWidget
 from customWidgets.fili_icon_provider import FileIconProvider
+from customWidgets.landing_page_widget import LandingPageWidget
 
 
 class MainWindow(QMainWindow):
@@ -69,14 +70,12 @@ class MainWindow(QMainWindow):
         dock_widget.setFloating(False)
         self.addDockWidget(Qt.LeftDockWidgetArea, dock_widget)
 
-        # QLabel
-        qlabel = QLabel(self)
-        qlabel.setText("Welcome to XLNK.")
+        self.landing_page_widget = LandingPageWidget()
 
         # Central Widget
         self.clicked_file = None
 
-        self.setCentralWidget(qlabel)
+        self.setCentralWidget(self.landing_page_widget)
 
         self.showMaximized()
     def toggle_docker_widget(self):

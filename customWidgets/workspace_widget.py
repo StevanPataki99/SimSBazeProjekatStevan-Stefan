@@ -42,7 +42,7 @@ class WorkSpaceWidget(QWidget):
         self.create_tab_widget()
         self.check_database_type_and_run()
         self.tab_widget.addTab(self.main_table, QIcon(
-            "img/iconXLNK.png"), self.file_clicked)
+            "img/code.png"), self.file_clicked)
         self.main_layout.addWidget(self.toolbar)
         self.main_layout.addWidget(self.tab_widget)
 
