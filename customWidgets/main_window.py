@@ -33,31 +33,27 @@ class MainWindow(QMainWindow):
 
         # ===================
         # Menu Button Actions
-
-        # Exit QAction
+        
+        # Exit QAction File Menu
         exit_action = QAction("Exit", self)
         exit_action.setShortcut(QKeySequence.Quit)
         exit_action.triggered.connect(self.close)
         self.file_menu.addAction(exit_action)
-        # End
-        # End
 
-        # Tool Bar
-        toolbar = QToolBar(self)
-        self.addToolBar(toolbar)
+        toggle_docker_action = QAction("Show/Hide Docker View")
+        toggle_docker_action.setShortcut(QKeySequence.WhatsThis)
+        toggle_docker_action.triggered.connect(self.toggle_docker_widget)
+        self.file_menu.addAction(toggle_docker_action)
+        
 
-        # delete action on toolbar
-        delete_action_tb = QAction("DELETE TABLE ROW", self)
-        delete_action_tb.setStatusTip("Obrisi Red U Tabeli")
-        delete_action_tb.triggered.connect(self.delete_table_row_tb)
-        toolbar.addAction(delete_action_tb)
+        
+
 
         # Dock Widget
         dock_widget = QDockWidget("EXPLORER", self)
         # File System Model
         self.file_system_model = QFileSystemModel()
-        self.icon = QIcon("img/system_binary.png")
-
+        #Setting icons for binary files.
         self.file_system_model.setIconProvider(FileIconProvider())
 
 
@@ -83,7 +79,8 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(qlabel)
 
         self.showMaximized()
-
+    def toggle_docker_widget(self):
+            pass
     # ToolBar Functions
     # TODO
     def delete_table_row_tb(self):
