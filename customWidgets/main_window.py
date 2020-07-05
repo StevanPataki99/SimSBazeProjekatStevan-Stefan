@@ -16,11 +16,9 @@ class MainWindow(QMainWindow):
 
         self.tree_view = None
         self.file_system_model = None
-
         # SET => Window Icon
         self.setWindowIcon(self.icon)
         # End
-
         # WSET => Window Title
         self.setWindowTitle("XLNK | Data Manager")
         # End

@@ -12,7 +12,6 @@ class WorkSpaceWidget(QWidget):
     def __init__(self, parent, file_clicked):
         super().__init__(parent)
         self.main_layout = QVBoxLayout()
-
         # Tool Bar
         self.toolbar = QToolBar(self)
         # delete action on toolbar

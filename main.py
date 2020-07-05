@@ -4,6 +4,7 @@ from customWidgets.main_window import MainWindow
 from PySide2 import QtGui
 import sys
 import time
+from pyside_material import apply_stylesheet
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
@@ -12,5 +13,6 @@ if __name__ == "__main__":
     splash.show()
     time.sleep(1)
     window = MainWindow()
+    apply_stylesheet(app, theme='dark_teal.xml')
     app.exec_()
     app.exit()
