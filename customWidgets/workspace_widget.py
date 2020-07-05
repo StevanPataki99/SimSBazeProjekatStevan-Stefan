@@ -1,4 +1,4 @@
-from PySide2.QtWidgets import QTableWidgetItem, QMainWindow, QApplication, QAction, QPushButton, QToolBar, QSplashScreen, QDockWidget, QFileSystemModel, QTreeView, QStatusBar, QWidget, QVBoxLayout, QTabWidget, QTableView, QTableWidget, QTableWidgetItem, QAbstractItemView, QLabel, QMessageBox
+from PySide2.QtWidgets import QTableWidgetItem, QMainWindow, QApplication, QAction, QPushButton, QToolBar, QSplashScreen, QDockWidget, QFileSystemModel, QTreeView, QStatusBar, QWidget, QVBoxLayout, QTabWidget, QTableView, QTableWidget, QTableWidgetItem, QAbstractItemView, QLabel, QMessageBox, QToolTip
 from PySide2.QtGui import QKeySequence, QPixmap, QIcon
 from PySide2.QtWidgets import QInputDialog, QLineEdit
 from PySide2.QtCore import Qt, QDir, QObject, Signal
@@ -16,16 +16,24 @@ class WorkSpaceWidget(QWidget):
         # Tool Bar
         self.toolbar = QToolBar(self)
         # delete action on toolbar
-        self.delete_action_tb = QAction("DELETE TABLE ROW", self)
-        self.delete_action_tb.setStatusTip("Obrisi Red U Tabeli")
+        self.delete_action_tb = QAction("Delete Table Row", self)
+        self.delete_action_tb.setStatusTip("Delete Selected Table Row")
         self.delete_action_tb.triggered.connect(self.delete_table_row_tb)
+        self.delete_action_tb.setIcon(QIcon("img/delete_icon.png"))
+        self.delete_action_tb.priority()
+        self.delete_action_tb.setStatusTip("Select the row to delete and press this button to delete it.")
+        self.delete_action_tb.setWhatsThis("Select the row to delete and press this button to delete it.")
+        self.delete_action_tb.setShortcut(QKeySequence.Delete)
         self.toolbar.addAction(self.delete_action_tb)
-
+        
         # ADD ONE TOOLBAR BUTTON
-        self.add_one_action_tb = QAction("ADD TABLE ROW", self)
-        self.add_one_action_tb.setStatusTip("ADD SINGLE ROW TO TABLE")
+        self.add_one_action_tb = QAction("Add Table Row", self)
+        self.add_one_action_tb.setStatusTip("Add Single Table Row")
+        self.add_one_action_tb.setToolTip("Add Table Row")
         self.add_one_action_tb.triggered.connect(self.add_table_row_handler)
+        self.add_one_action_tb.setIcon(QIcon("img/add_row_icon.png"))
         self.toolbar.addAction(self.add_one_action_tb)
+
 
         self.setLayout(self.main_layout)
         self.file_clicked = file_clicked
